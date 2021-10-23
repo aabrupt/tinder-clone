@@ -1,19 +1,16 @@
 // Libraries
-import React, {useState} from 'react';
-import TinderCard from 'react-tinder-card';
-import './TinderCards.css';
+import React, {useEffect, useState} from 'react'
+import TinderCard from 'react-tinder-card'
+import './TinderCards.css'
+import axios from './axios'
+import {UserSchema} from '../../backend/database/dbCards'
 // Components
 // Icons
 
 export interface ITinderCardsProps {
 }
 
-export interface Person {
-    name: string
-    url: string
-}
-
-type Direction = "up"|"down"|"left"|"right";
+type Direction = "up"|"down"|"left"|"right"
 
 export function swiped (direction: Direction, nameToDelete: string) {
     console.log("removing: " + nameToDelete)
@@ -24,16 +21,19 @@ export function outOfFrame (name: string) {
 }
 
 export default function TinderCards (props: ITinderCardsProps) {
-    const [people, setPeople] = useState<Array<Person>>([
-        {
-            name: "Elon Musk",
-            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Elon_Musk_Royal_Society_%28crop1%29.jpg/220px-Elon_Musk_Royal_Society_%28crop1%29.jpg"
-        },
-        {
-            name: "Jeff Bezos",
-            url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpixel.nymag.com%2Fimgs%2Fdaily%2Fintelligencer%2F2019%2F02%2F07%2F07-jeff-bezos.w700.h700.jpg&f=1&nofb=1"
+    const [people, setPeople] = useState<Array<UserSchema>>([])
+
+    useEffect(() => {
+        async function fetchData() {
+            const req:{
+                data: Array<UserSchema>
+            } = await axios.get('/tinder/cards')
+        
+            setPeople(req.data)
         }
-    ]);
+
+        fetchData()
+    }, [])
 
     return (
     <div className="tinderCards">
@@ -46,7 +46,7 @@ export default function TinderCards (props: ITinderCardsProps) {
                     onSwipe={(dir) => swiped(dir, person.name)}
                     onCardLeftScreen={() => outOfFrame(person.name)}
                 >
-                    <div style={{backgroundImage: `url(${person.url})`}} className="card">
+                    <div style={{backgroundImage: `url(${person.imgURL})`}} className="card">
                         <h3>{person.name}</h3>
                     </div>
                 </TinderCard>
