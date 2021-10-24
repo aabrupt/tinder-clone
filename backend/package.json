@@ -4,7 +4,8 @@
   "main": "server.ts",
   "scripts": {
     "dev": "nodemon server.ts",
-    "start": "ts-node ."
+    "start": "node dist/server.js",
+    "postinstall": "tsc"
   },
   "license": "ISC",
   "devDependencies": {
