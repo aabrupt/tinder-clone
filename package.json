@@ -2,5 +2,8 @@
   "scripts": {
     "start": "concurrently \"yarn --cwd ./backend dev\" \"yarn --cwd ./frontend start\""
   },
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^6.3.0"
+  }
 }
