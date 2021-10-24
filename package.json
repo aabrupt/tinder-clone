@@ -1,3 +1,6 @@
 {
+  "scripts": {
+    "start": "concurrently \"yarn --cwd ./backend dev\" \"yarn --cwd ./frontend start\""
+  },
   "dependencies": {}
 }
